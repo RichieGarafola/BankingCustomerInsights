@@ -5,7 +5,10 @@
 Banking Customer Insights Dashboard is a data web application that provides real-time insights into the demographics and account balances of bank customers based on their job categories. This interactive dashboard helps banking professionals to analyze customer data and make informed decisions. The application is built using Python and leverages libraries such as Pandas, Plotly, and Streamlit. The dashboard provides a range of features such as filtering based on job category, KPIs, histograms, and detailed data views.
 
 Imagine you are a data analyst at a leading banking institution. Your job is to analyze customer data and provide insights that can improve customer experience and drive business growth. You spend hours working on complex data sets, and often the data changes rapidly, making it difficult to keep track of trends and changes over time. You wish you had a tool that could help you monitor the data in real-time and provide insights that are easy to understand and share with others. That's where this Banking Customer Insights Dashboard comes in. With this tool, you can monitor customer data in real-time, visualize key metrics, and identify trends and patterns that can help you make data-driven decisions.
+---
 
+Deployed Streamlit app:
+https://bankingcustomers.streamlit.app/
 
 ---
 
