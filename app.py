@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd  
 # interactive charts
 import plotly.express as px  
-# 🎈 data web app development
+# data web app development
 import streamlit as st  
 
 df = pd.read_csv("./Resources/Bank.csv")
