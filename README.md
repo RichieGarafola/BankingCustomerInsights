@@ -70,3 +70,4 @@ The detailed data view displays the entire data set for the selected job categor
 **Show detailed data view:** The data frame with the filtered data is displayed using st.dataframe().
 
 **Allow user to control update frequency:** The time.sleep() function is used to control the update frequency of the simulated live data feed. The user can adjust the update frequency by changing the parameter of time.sleep().
+
