@@ -1,73 +1,91 @@
-# Banking Customer Insights Dashboard
+# Banking Customer Insights
 
-![app](./Images/app.png)
+**A reproducible customer-analytics dashboard built with Python, pandas, Plotly, and Streamlit.**
 
-Banking Customer Insights Dashboard is a data web application that provides real-time insights into the demographics and account balances of bank customers based on their job categories. This interactive dashboard helps banking professionals to analyze customer data and make informed decisions. The application is built using Python and leverages libraries such as Pandas, Plotly, and Streamlit. The dashboard provides a range of features such as filtering based on job category, KPIs, histograms, and detailed data views.
+Explore demographics, account balances, and term-deposit subscription outcomes in the repository's sample banking-marketing dataset. All KPIs and charts now reflect the **actual filtered records** rather than randomly simulated metric changes.
 
-Imagine you are a data analyst at a leading banking institution. Your job is to analyze customer data and provide insights that can improve customer experience and drive business growth. You spend hours working on complex data sets, and often the data changes rapidly, making it difficult to keep track of trends and changes over time. You wish you had a tool that could help you monitor the data in real-time and provide insights that are easy to understand and share with others. That's where this Banking Customer Insights Dashboard comes in. With this tool, you can monitor customer data in real-time, visualize key metrics, and identify trends and patterns that can help you make data-driven decisions.
+> This is a static historical sample dashboard. It is not connected to a bank, transaction system, streaming data source, or live customer records.
 
----
+![Screenshot of original Banking Customer Insights app](Images/app.png)
 
-Deployed Streamlit app:
-https://bankingcustomers.streamlit.app/
+*Historical application screenshot preserved; it is not a current screenshot of the revised interface.*
 
----
+## Why the project was updated
 
-## Getting Started
-To get started, you need to have the following installed:
+The original app used a 200-iteration loop with three-second pauses. It multiplied ages and balances by random factors, added a random number to the count of married customers, and displayed those results as if they were actual data. That behavior was misleading for a portfolio demonstrating business-intelligence quality.
 
-    Python 3
-    Streamlit
-    Pandas
-    Numpy
-    Plotly
+The modernization removes the animation and replaces the output with deterministic, traceable reporting.
 
----
+## Features
 
-## Installation
+- Filter by **job**, **marital status**, **term-deposit outcome**, and **age**.
+- View actual sample **customer count, average age, count married, and mean balance**.
+- Calculate term-deposit subscription counts and observed shares using correct denominators.
+- Explore age and balance distributions with Plotly charts.
+- Compare observed term-deposit subscription shares by job category.
+- Inspect filtered records and download an aggregate CSV summary.
+- Validate required fields and reject nonnumeric or implausible age values.
+- Run automated regression and headless Streamlit startup tests in CI.
 
-- Clone the repository
+**Important definitions:**
 
-- Install the required libraries by running the following command in your terminal:
-    
-    pip install streamlit pandas numpy plotly
+| Metric | Calculation |
+| --- | --- |
+| Customers in sample | Number of filtered CSV rows |
+| Average age | Mean of the filtered `age` values |
+| Married customers | Count of filtered `marital == married` rows |
+| Average balance | Mean of source `balance` values, in the **source's unspecified currency units** |
+| Deposit subscribers | Count of filtered `deposit == yes` rows |
+| Subscription share | Deposit subscribers divided by filtered customer count |
 
-- Run the app by running the following command:
+Negative account balances are permitted. The dashboard does not manufacture percentage-change deltas or compare against fictional targets. Subscription shares describe the selected sample, not the population of a bank.
 
-    streamlit run app.py
+## Local setup
 
----
+Use Python **3.11+**:
 
-## Usage
-Select the job category from the dropdown to filter the data.
-The dashboard provides near real-time data simulation with changes in age and balance data.
-The KPIs are displayed in a three-column layout with their respective metrics.
-The charts display the distribution of ages and account balances.
-The detailed data view displays the entire data set for the selected job category.
+```bash
+python -m venv .venv
+# Activate your environment using the relevant shell command.
+python -m pip install -r requirements.txt
+python -m streamlit run app.py
+```
 
----
+Run tests:
 
-## High-level walkthrough:
+```bash
+python -m pip install -r requirements-dev.txt
+python -m pytest -q
+```
 
-**Import libraries:** The necessary Python libraries are imported to run the program. These include Pandas, Numpy, Plotly Express, and Streamlit.
+No database server or external API key is needed to run the dashboard; the app reads `Resources/Bank.csv` relative to its own location.
 
-**Load data:** The data is loaded into the program using the Pandas library. In this case, the data is read from a CSV file located in a Resources folder.
+## Data provenance and limitations
 
-**Set page configuration:** The Streamlit function st.set_page_config() is used to set the title and layout of the dashboard.
+- **Input:** `Resources/Bank.csv`, a pre-existing dataset committed to this repository.
+- **Provenance:** The file resembles publicly distributed bank-marketing data, but its original source, exact variant, licensing, and sampling method have **not yet been independently confirmed**. Verify these before commercial reuse or redistributed derivative datasets.
+- **Not real-time:** The app is a descriptive analysis of a fixed sample. Changes to filters alter the subset, not the source dataset.
+- **No forecasting:** Job-category differences do not establish causality or predict future deposit behavior.
+- **Selection bias:** The original dataset may not be representative of a broader population. Missing or unknown categorical values may be present.
+- **Privacy:** Do not upload or commit confidential bank/customer records to this public repository.
 
-**Create title and filters:** The title of the dashboard is set using the st.title() function, and a dropdown filter for the job category is created using the st.selectbox() function.
+## Project structure
 
-**Create container:** A container element is created using st.empty(), which is used to display the dashboard output.
+| Path | Purpose |
+| --- | --- |
+| `app.py` | Streamlit UI, filters, KPIs, and charts |
+| `analytics.py` | Pure data checks, filtering, KPI formulas, and grouping |
+| `Resources/Bank.csv` | Existing fixed sample CSV (unchanged) |
+| `tests/` | Calculation and headless-app tests |
+| `.github/workflows/ci.yml` | Continuous integration |
+| `Images/app.png` | Preserved historical screenshot |
 
-**Filter data:** The data is filtered based on the selected job category using the Pandas function df[df['job']==job_filter].
+## Deployment
 
-**Simulate live data feed:** The for loop simulates live data by randomly generating new data based on the existing data in the data frame.
+Original app URL: [bankingcustomers.streamlit.app](https://bankingcustomers.streamlit.app/). Live availability and deployment of the revised code have **not** been independently verified.
 
-**Create KPIs:** Three key performance indicators (KPIs) are created based on the filtered data: average age of employees, count of married employees, and average account balance of employees. These KPIs are displayed using the st.metric() function.
+When deploying on Streamlit Community Cloud, use `app.py` as the entry point. Verify filters, charts, KPI results, and downloaded summaries in a real browser before promoting the revised deployment.
 
-**Create charts:** Two charts are created using Plotly Express: a histogram of age distribution and a histogram of account balance distribution. These charts are displayed using st.plotly_chart().
+## History
 
-**Show detailed data view:** The data frame with the filtered data is displayed using st.dataframe().
-
-**Allow user to control update frequency:** The time.sleep() function is used to control the update frequency of the simulated live data feed. The user can adjust the update frequency by changing the parameter of time.sleep().
-
+The project began as an experiment with animated Streamlit dashboards. Its original code is preserved in Git history. The updated version prioritizes **truthful metrics, source traceability, reproducible calculations, and test coverage** over simulated motion.
